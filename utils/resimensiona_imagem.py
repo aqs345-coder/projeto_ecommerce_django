@@ -4,7 +4,7 @@ from django.conf import settings
 from PIL import Image
 
 
-def resize_image(image, new_width=800):
+def redimensiona_imagem(image, new_width=800):
     image_full_path = os.path.join(settings.MEDIA_ROOT, image.name)
     image_pil = Image.open(image_full_path)
     original_width, original_height = image_pil.size

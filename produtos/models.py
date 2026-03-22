@@ -1,6 +1,6 @@
 from django.db import models
 
-from utils.resize_image import resize_image
+from utils.resimensiona_imagem import redimensiona_imagem
 
 
 class Produto(models.Model):
@@ -23,13 +23,17 @@ class Produto(models.Model):
     )
 
     def save(self, *args, **kwargs):
+
+        nome_imagem_atual = str(self.imagem.name)
         super_save = super().save(*args, **kwargs)
-
-        max_image_width = 900
-
+        imagem_mudou = False
         if self.imagem:
-            resize_image(self.imagem, max_image_width)
-            return super_save
+            imagem_mudou = nome_imagem_atual != self.imagem.name
+
+        if imagem_mudou:
+            redimensiona_imagem(self.imagem, 900)
+
+        return super_save
 
     def __str__(self) -> str:
         return self.nome
@@ -45,3 +49,6 @@ class Variacao(models.Model):
     preco = models.FloatField()
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.nome
