@@ -1,5 +1,5 @@
 from django.db import models
-
+from .utils.rands import slugify_new
 from utils.resimensiona_imagem import redimensiona_imagem
 
 
@@ -10,7 +10,7 @@ class Produto(models.Model):
     imagem = models.ImageField(
         upload_to='produtos_imagens/%Y/%m/', blank=True, null=True
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     preco_marketing = models.FloatField()
     preco_marketing_promocional = models.FloatField(default=0)
     tipo = models.CharField(
@@ -23,7 +23,9 @@ class Produto(models.Model):
     )
 
     def save(self, *args, **kwargs):
-
+        # TODO: Adicionar um método de criação de slug automático
+        if not self.slug:
+            self.slug = slugify_new(self.nome, 4)
         nome_imagem_atual = str(self.imagem.name)
         super_save = super().save(*args, **kwargs)
         imagem_mudou = False
