@@ -1,0 +1,17 @@
+venv/
+venv/*
+.vscode/
+.vscode/*
+HTML_CSS_IMG/
+HTML_CSS_IMG/*
+media/
+media/*
+parciais/
+parciais/*
+migrations/
+migrations/*
+__pycache__/
+__pycache__/*
+bootstrap.css
+db.sqlite3
+
