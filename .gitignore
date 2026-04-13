@@ -9,6 +9,8 @@ produtos_imagens/
 __pycache__/
 local_settings.py
 db.sqlite3
+*migrations/
+migrations/*
 
 # IDE files
 *.iml
@@ -58,8 +60,6 @@ htmlcov/
 Procfile
 db.sqlite3
 db.sqlite3-journal
-manage.py
-requirements.txt
 runtime.txt
 
 # Python

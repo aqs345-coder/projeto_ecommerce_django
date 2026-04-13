@@ -1,10 +1,14 @@
 from django.db import models
-from .utils.rands import slugify_new
+
+from utils.formatar_preco import formatar_preco
 from utils.resimensiona_imagem import redimensiona_imagem
+
+from .utils.rands import slugify_new
 
 
 class Produto(models.Model):
     nome = models.CharField(max_length=255)
+    categoria = models.CharField(max_length=255, default='Geral')
     descricao_curta = models.TextField(max_length=255)
     descricao_longa = models.TextField()
     imagem = models.ImageField(
@@ -22,7 +26,14 @@ class Produto(models.Model):
         )
     )
 
+    def get_preco_formatado(self):
+        return formatar_preco(self.preco_marketing)
+
+    def get_preco_promocional_formatado(self):
+        return formatar_preco(self.preco_marketing_promocional)
+
     def save(self, *args, **kwargs):
+
         # TODO: Adicionar um método de criação de slug automático
         if not self.slug:
             self.slug = slugify_new(self.nome, 4)
