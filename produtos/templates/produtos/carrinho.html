@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block conteudo %}
+    <h1>Aqui é o teu carrinho, meu chefe</h1>
+    {{ request.session.carrinho }}
+{% endblock conteudo %}
