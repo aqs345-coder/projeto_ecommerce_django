@@ -310,6 +310,14 @@ ul.errorlist li {
   text-decoration: none;
 }
 
+.product-link {
+  color: inherit;
+}
+.product-link:hover {
+  color: var(--dark-red);
+  text-decoration: none;
+}
+
 /* Container */
 .container {
   max-width: 1200px;
