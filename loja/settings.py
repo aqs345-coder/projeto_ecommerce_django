@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'produtos',
     'pedidos',
     'perfil',
+    'crispy_forms',
+    "crispy_bootstrap4",
 
 
 
@@ -161,3 +163,7 @@ MESSAGE_TAGS = {
     constants.SUCCESS: 'alert-success',
     constants.WARNING: 'alert-warning',
 }
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
