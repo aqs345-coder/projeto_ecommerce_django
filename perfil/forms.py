@@ -15,13 +15,13 @@ class PerfilForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
-        required=True,
+        required=False,
         widget=forms.PasswordInput(),
         label='Senha'
     )
 
     password2 = forms.CharField(
-        required=True,
+        required=False,
         widget=forms.PasswordInput(),
         label='Confirme a senha'
     )
@@ -51,6 +51,7 @@ class UserForm(forms.ModelForm):
         error_msg_email_exists = 'Já existe um usuário com esse email.'
         error_msg_passwords_different = 'As senhas não são iguais.'
         error_msg_password_short = 'A senha deve conter pelo menos 8 caracteres.'
+        error_msg_required_field = 'Este campo é obrigatório.'
 
         if self.usuario:
             if usuario_db:
@@ -68,6 +69,20 @@ class UserForm(forms.ModelForm):
                 if len(password_data) < 8:
                     validation_error_msgs['password'] = error_msg_password_short
         else:
-            pass
+            if usuario_db:
+                validation_error_msgs['username'] = error_msg_user_exists
+
+            if email_db:
+                validation_error_msgs['email'] = error_msg_email_exists
+
+            if password_data != password2_data:
+                validation_error_msgs['password'] = error_msg_passwords_different
+
+            if not password_data:
+                validation_error_msgs['password'] = error_msg_required_field
+
+            if len(password_data) < 8:
+                validation_error_msgs['password'] = error_msg_password_short
+
         if validation_error_msgs:
             raise (forms.ValidationError(validation_error_msgs))

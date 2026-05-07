@@ -3,7 +3,7 @@
 {% load static %}
 {% block conteudo %}
     {% if request.session.carrinho %}
-        #TODO: Adicionar possibilidade de diminuir a quantidade de itens de um mesmo produto
+        {% comment %} #TODO: Adicionar possibilidade de diminuir a quantidade de itens de um mesmo produto {% endcomment %}
         <div class="row mt-3">
             <div class="col">
                 <h3>Carrinho de compras</h3>
@@ -63,7 +63,7 @@
     {% else %}
         <div class="row mt-3">
             <div class="col">
-                #TODO: Colocar imagem de carrinho vazio e botão para a home
+                {% comment %} #TODO: Colocar imagem de carrinho vazio e botão para a home {% endcomment %}
                 <h3>Carrinho de compras</h3>
                 <p class="lead">No momento, seu carrinho está vazio.</p>
             </div>
