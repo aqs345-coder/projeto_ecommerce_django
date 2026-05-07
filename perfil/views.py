@@ -2,10 +2,13 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 import copy
 
 from . import models
 from . import forms
+
+# TODO: Separar a criação e atualização do perfil em views diferentes
 
 
 class BasePerfil(View):
@@ -29,7 +32,9 @@ class BasePerfil(View):
                     instance=self.request.user
                 ),
                 'perfilform': forms.PerfilForm(
-                    data=self.request.POST or None
+                    data=self.request.POST or None,
+                    instance=self.perfil
+
                 ),
             }
         else:
@@ -44,6 +49,9 @@ class BasePerfil(View):
 
         self.userform = self.contexto['userform']
         self.perfilform = self.contexto['perfilform']
+
+        if self.request.user.is_authenticated:
+            self.template_name = 'perfil/atualizar.html'
 
         self.renderizar = render(
             self.request,
@@ -77,6 +85,15 @@ class Criar(BasePerfil):
             usuario.first_name = first_name
             usuario.last_name = last_name
             usuario.save()
+
+            if not self.perfil:
+                self.perfilform.cleaned_data['usuario'] = usuario
+                perfil = models.Perfil(**self.perfilform.cleaned_data)
+                perfil.save()
+            else:
+                perfil = self.perfilform.save(commit=False)
+                perfil.usuario = usuario
+                perfil.save()
         else:
             usuario = self.userform.save(commit=False)
             usuario.set_password(password)
@@ -85,6 +102,16 @@ class Criar(BasePerfil):
             perfil = self.perfilform.save(commit=False)
             perfil.usuario = usuario
             perfil.save()
+
+        if password:
+            autentica = authenticate(
+                self.request,
+                username=usuario,
+                password=password
+            )
+
+            if autentica:
+                login(self.request, autentica)
 
         self.request.session['carrinho'] = self.carrinho
         self.request.session.save()

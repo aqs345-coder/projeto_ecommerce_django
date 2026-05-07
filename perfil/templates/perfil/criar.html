@@ -2,11 +2,15 @@
 {% load crispy_forms_tags %}
 {% block conteudo %}
     <div class="row">
+        {% if not self.request.user.is_athenticated %}
+            <div class="col-lg">
+                <h1>Login</h1>
+            </div>
+        {% endif %}
         <div class="col-lg">
-            <h1>Login</h1>
-        </div>
-        <div class="col-lg">
-            <h1>Cadastro</h1>
+            {% block titulocadastro %}
+                <h1>Cadastro</h1>
+            {% endblock titulocadastro %}
             <form action="" method="POST">
                 {% csrf_token %}
                 {{ userform | crispy }}
